@@ -3,7 +3,6 @@
 prototype-materialize is a project built to help prototype Python web applications with Flask, SQLite3 and the Materialize CSS Framework.
 
 ### Install
-The setup.sh script will install all necessary requirements, create cert & key files, and move the working directory to /opt/transportc2:
 ```
 git clone https://github.com/darneymartin/prototype-materialize
 cd prototype-materialize
