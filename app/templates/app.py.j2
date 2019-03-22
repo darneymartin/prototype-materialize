@@ -1,0 +1,80 @@
+from flask import Flask, render_template, session, redirect, url_for, escape, request, Response
+from db import Gateway
+from model import {{ Model.Name }}
+
+app = Flask(__name__)
+
+gateway = Gateway()
+
+@app.route('/', methods=['GET'])
+def index():
+    data = gateway.getAll()
+    return(render_template('index.html', data=data))
+
+@app.route('/view/<int:ID>', methods=['GET'])
+def view(ID):
+    data = gateway.get(ID)
+    return(render_template('form.html', Data=data, Mode="View"))
+
+@app.route('/create', methods=['GET','POST'])
+def create():
+    if request.method == 'GET':
+        return(render_template('form.html',Data=None, Mode="Create"))
+    elif request.method == 'POST':
+        try:
+            model = {}
+        {% for Field in Model.Fields %}
+            model['{{ Field.Name }}'] = request.form['{{ Field.Name }}']
+        {% endfor %}
+            gateway.create(model)
+            return(redirect(url_for("index")))
+        except Exception as e:
+            print(e)
+            return(render_template('form.html', Mode="Create"))
+    else:
+        return(render_template('form.html', Mode="Create"))
+
+
+@app.route('/modify/<int:ID>', methods=['GET', 'POST'])
+def modify(ID):
+    if request.method == 'GET':
+        data = gateway.get(ID)
+        return(render_template('form.html', Data=data, Mode="Modify"))
+    elif request.method == 'POST':
+        try:
+            model = {}
+            model['ID'] = request.form['ID']
+            print(model['ID'])
+        {% for Field in Model.Fields %}
+            model['{{ Field.Name }}'] = request.form['{{ Field.Name }}']
+        {% endfor %}
+            gateway.modify(model)
+            return(redirect(url_for("index")))
+        except Exception as e:
+            print(e)
+            return(render_template('form.html', Mode="Create"))
+    else:
+        return(render_template('form.html', Mode="Create"))
+
+@app.route('/delete/<int:ID>', methods=['GET', 'POST'])
+def delete(ID):
+    if request.method == 'GET':
+        data = gateway.get(ID)
+        return(render_template('form.html', Data=data, Mode="Delete"))
+    elif request.method == 'POST':
+        try:
+            model = {}
+            model['ID'] = request.form['ID']
+        {% for Field in Model.Fields %}
+            model['{{ Field.Name }}'] = request.form['{{ Field.Name }}']
+        {% endfor %}
+            gateway.delete(model)
+            return(redirect(url_for("index")))
+        except Exception as e:
+            print(e)
+            return(render_template('form.html', Mode="Create"))
+    else:
+        return(render_template('form.html', Mode="Create"))
+
+if __name__ == '__main__':
+    app.run(debug=True)

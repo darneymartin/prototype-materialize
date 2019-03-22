@@ -1,0 +1,20 @@
+Database:
+  Type: "SQLite3"
+  Host: "localhost"
+  Username: "user"
+  Password: "pass"
+  Port: 1433
+  Schema: "Home"
+
+Model:
+  Name: "Users"
+  Fields:
+    - Name: "FirstName"
+      Type: "VARCHAR(254)"
+    - Name: "LastName"
+      Type: "VARCHAR(254)"
+    - Name: "Comment"
+      Type: "TEXT"
+
+Application:
+  Name: "User Manager"

@@ -1,0 +1,85 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>{{ Application.Name }}</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="icon" type="image/png" href="/static/img/favicon.ico"/>
+</head>
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="center brand-logo">{{ Application.Name }}</a>
+    </div>
+  </nav>
+  <div>
+    <!-- Notice Modal Structure -->
+    <div id="notice-modal" class="modal">
+      <div class="modal-content">
+      <h4>Notice</h4>
+      <p>The item has successfully been {% raw %}{% if Mode == "Create" %}created{% elif Mode == "Delete" %}deleted{% elif Mode == "Modify" %}modified{% else %}Error invalid action{% endif %}{% endraw %}</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect btn" onclick="notice_btn();">Close</a>
+      </div>
+    </div>
+    <br>
+    <br>
+    <form>
+      <div class="section">
+        <div class="row">
+          <h4 class="center-align">{{ '{{ Mode }}' }}</h4>
+        {% for Field in Model.Fields %}
+          <div class="input-field col s6 offset-s3">
+            <input id="{{ Field.Name }}" type="text" class="validate" {% raw %}{% if Data %}{% endraw %}value="{{'{{'}} Data.{{ Field.Name }}{{'}}'}}"{% raw %}{% endif %}{% endraw %}>
+            <label for="{{ Field.Name }}" class="active">{{ Field.Name }}</label>
+          </div>
+        {% endfor %}
+        </div>
+        <div class="row">
+          <div class="col s3 offset-s3">
+            <p class="center-align">
+              <button class='btn grey' type='button' onclick='POST_data()'>{{ '{{ Mode }}' }}</button>
+            </p>
+          </div>
+          <div class="col s3">
+            <p class="center-align">
+              <button class='center-align btn grey' type='button' onclick="location.href='/';">Cancel</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+$('.modal').modal();
+
+function POST_data()
+{
+  $.post(window.location.pathname,
+    {
+      {% raw %}{% if Data %}{% endraw %}'ID': "{{'{{'}} Data.ID {{'}}'}}",{% raw %}{% endif %}{% endraw %}
+      {% for Field in Model.Fields %}
+      {{"'"}}{{ Field.Name }}{{"': $('#"}}{{ Field.Name }}{{"').val()"}} {% if not loop.last %}, {% endif %}
+      {% endfor %}
+   })
+   .done(function()
+   {
+     $("#notice-modal").modal("open")
+   });
+}
+
+function notice_btn()
+{
+  location.href="/";
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+class {{ Model.Name }}(object):
+    """docstring for {{ Model.Name }}."""
+    def __init__(self):
+        pass
+
+    def build(self, ID,{% for Field in Model.Fields %} {{ Field.Name }} {% if not loop.last %}, {% endif %} {% endfor %}):
+        self.ID = ID
+        {% for Field in Model.Fields %}
+        self.{{ Field.Name }} = {{ Field.Name }}
+        {% endfor %}
+        return(self)

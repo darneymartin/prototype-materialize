@@ -1,0 +1,168 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>{{ Application.Name }}</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="icon" type="image/png" href="/static/img/favicon.ico"/>
+</head>
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="center brand-logo">{{ Application.Name }}</a>
+    </div>
+  </nav>
+  <!-- Select Modal Structure -->
+  <div id="select-modal" class="modal">
+    <div class="modal-content">
+    <h4>Warning</h4>
+    <p>Please select and item to continue..</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn">Close</a>
+    </div>
+  </div>
+  <div>
+    <br>
+    <br>
+    <form>
+      <div class="section">
+        <div class="row">
+          <h4 class="center-align">{{ Model.Name }}</h4>
+          <div class="input-field col s6 offset-s3">
+            <div class="fixed-action-btn right" style="position: relative">
+              <a class="btn-floating orange">
+                <i class="large material-icons">more_horiz</i>
+              </a>
+              <ul>
+                <li>
+                  <a class="btn-floating orange right" title="Create" onclick="create_item();">
+                    <i class="material-icons">add</i>
+                  </a>
+                </li>
+                <li>
+                  <a class="btn-floating orange right" title="Modify" onclick="modify_item();">
+                    <i class="material-icons">edit</i>
+                  </a>
+                </li>
+                <li>
+                  <a class="btn-floating orange right" title="Delete" onclick="delete_item();">
+                    <i class="material-icons">delete</i>
+                  </a>
+                </li>
+                <li>
+                  <a class="btn-floating orange right" title="View" onclick="view_item()">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <table class="centered highlight">
+              <thead>
+                <tr>
+                  <th></th>
+                  {% for Field in Model.Fields %}
+                  <th>{{ Field.Name }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>{% raw %}
+                {% for item in data %}
+                  <tr>
+                    <td>
+                      <p>
+                        <label>
+                          <input name="selection" id="{{ item.ID }}" type="radio" value="{{ item.ID }}" class="with-gap"/>
+                          <span></span>
+
+                        </label>
+                      </p>
+                    </td>
+                      {% endraw %}
+                    {% for Field in Model.Fields %}
+                    <td>{{'{{'}}{{'item.'}}{{ Field.Name }}{{'}}'}}</td>
+                    {% endfor %}
+                  </tr>{% raw %}
+                {% endfor %}
+                {% endraw %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems, {
+      direction: 'left',
+      hoverEnabled: false
+    });
+  });
+
+  $('.modal').modal();
+
+  function create_item()
+  {
+    location.href='/create';
+  }
+
+  function view_item()
+  {
+    var ID = getSelected();
+    if(ID < 0 || ID === undefined)
+    {
+      //Open Modal Asking to select
+      $('.modal').modal("open");
+    }
+    else
+    {
+        location.href='/view/'+ID;
+    }
+  }
+  function modify_item()
+  {
+    var ID = getSelected();
+    if(ID < 0 || ID === undefined)
+    {
+      //Open Modal Asking to select
+      $('.modal').modal("open");
+    }
+    else
+    {
+        location.href='/modify/'+ID;
+    }
+  }
+
+  function delete_item()
+  {
+    var ID = getSelected();
+    if(ID < 0 || ID === undefined)
+    {
+      //Open Modal Asking to select
+      $('.modal').modal("open");
+    }
+    else
+    {
+        location.href='/delete/'+ID;
+    }
+  }
+
+  /*
+
+  */
+  function getSelected()
+  {
+    var ID = $("input[type='radio']:checked").val();
+    return(ID);
+  }
+  </script>
+</body>
+</html>
