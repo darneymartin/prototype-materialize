@@ -26,7 +26,7 @@ create_template = env.get_template('create.sql.j2')
 index_template = env.get_template('index.html.j2')
 form_template = env.get_template('form.html.j2')
 
-
+# Insert Variables
 app_output = app_template.render(Application=config_data["Application"] , Model=config_data["Model"] ,Database=config_data["Database"])
 db_output = db_template.render(Application=config_data["Application"] , Model=config_data["Model"] ,Database=config_data["Database"])
 model_output = model_template.render(Application=config_data["Application"] , Model=config_data["Model"] ,Database=config_data["Database"])
@@ -34,6 +34,15 @@ create_output = create_template.render(Application=config_data["Application"] , 
 index_output = index_template.render(Application=config_data["Application"] , Model=config_data["Model"] ,Database=config_data["Database"])
 form_output = form_template.render(Application=config_data["Application"] , Model=config_data["Model"] ,Database=config_data["Database"])
 
+# Build Folder Structure
+if not os.path.exists("build"):
+    os.mkdir("build")
+if not os.path.exists("build/app"):
+    os.mkdir("build/app")
+if not os.path.exists("build/app/templates"):
+    os.mkdir("build/app/templates")
+
+# Write New Files
 with open("build/app/app.py","w+") as new_file:
     new_file.write(app_output)
 
@@ -42,9 +51,6 @@ with open("build/app/db.py","w+") as new_file:
 
 with open("build/app/model.py","w+") as new_file:
     new_file.write(model_output)
-
-#with open("build/app","") as new_file:
-#    new_file.write(create_output)
 
 with open("build/app/templates/index.html","w+") as new_file:
     new_file.write(index_output)
