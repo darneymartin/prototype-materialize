@@ -38,11 +38,13 @@
         {% endfor %}
         </div>
         <div class="row">
+          {% raw %}{% if Mode != "View" %}{% endraw %}
           <div class="col s3 offset-s3">
             <p class="center-align">
               <button class='btn grey' type='button' onclick='POST_data()'>{{ '{{ Mode }}' }}</button>
             </p>
           </div>
+          {% raw %}{% endif %}{% endraw %}
           <div class="col s3">
             <p class="center-align">
               <button class='center-align btn grey' type='button' onclick="location.href='/';">Cancel</button>
