@@ -10,11 +10,12 @@ Model:
   Name: "Users"
   Fields:
     - Name: "FirstName"
-      Type: "VARCHAR(254)"
+      Type: "String(254)"
     - Name: "LastName"
-      Type: "VARCHAR(254)"
+      Type: "String(254)"
     - Name: "Comment"
-      Type: "TEXT"
+      Type: "String(254)"
 
 Application:
   Name: "User Manager"
+  Location: "/tmp/usermanager"

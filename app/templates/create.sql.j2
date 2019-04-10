@@ -1,7 +1,0 @@
-CREATE TABLE {{ Model.Name }}
-(
- 'ID' INTEGER PRIMARY KEY AUTOINCREMENT,
- {% for Field in Model.Fields %}
- {{ Field.Name }} {{ Field.Type }}{% if not loop.last %},{{"\n"}}{% endif %}
- {% endfor %}
-);
