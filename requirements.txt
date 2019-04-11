@@ -1,3 +1,4 @@
 pyyaml
 flask
 jinja2
+Flask-SQLAlchemy
